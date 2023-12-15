@@ -121,6 +121,8 @@ The prisma client is used to interact with the database:
 ❯ npx prisma db push
 ```
 
+## [19:43](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=1183) Use schemas defined in pastebin
+
 ## Acknowledgements
 
 This project was inspired by Elliot-Chong's fantastic YouTube tutorial titled "Build & Deploy: Full Stack AI Quiz Platform with NextJS 13, 
