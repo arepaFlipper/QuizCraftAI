@@ -70,6 +70,31 @@ found 0 vulnerabilities
 Success! Created quiz_craft_ai at /home/tovar/Documents/yt-tutos/Elliott-Chong/quizmify/quiz_craft_ai
 ```
 
+## Install `shadcn`
+```bash
+❯ npx shadcn-ui@latest init
+
+Need to install the following packages:
+shadcn-ui@0.4.1
+Ok to proceed? (y) y
+✔ Would you like to use TypeScript (recommended)? … no / yes y
+✔ Which style would you like to use? › New York
+✔ Which color would you like to use as base color? › Slate
+✔ Where is your global CSS file? … src/app/globals.css
+✔ Would you like to use CSS variables for colors? … no / yes y
+✔ Where is your tailwind.config.js located? … tailwind.config.js
+✔ Configure the import alias for components: … @/components
+✔ Configure the import alias for utils: … @/lib/utils
+✔ Are you using React Server Components? … no / yes y
+✔ Write configuration to components.json. Proceed? … yes
+
+✔ Writing components.json...
+✔ Initializing project...
+✔ Installing dependencies...
+
+Success! Project initialization completed.
+```
+
 ## Acknowledgements
 
 This project was inspired by Elliot-Chong's fantastic YouTube tutorial titled "Build & Deploy: Full Stack AI Quiz Platform with NextJS 13, 
