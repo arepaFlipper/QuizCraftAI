@@ -95,6 +95,32 @@ Ok to proceed? (y) y
 Success! Project initialization completed.
 ```
 
+## [11:13](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=673) set PlanetScale
+You need a to add a payment method for this step.
+
+## [11:15](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=675) Install prismadb as Development Dependency
+
+The prisma dev dependency is used to initialize and push migrations into Database, 
+through the Prisma schema file.
+```bash
+❯ npm install prisma -D
+```
+The prisma client is used to interact with the database:
+```bash
+❯ npm install @prisma/client
+```
+
+```bash
+❯ npm prisma init --datasource-provider postgresql
+```
+
+## [14:00](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=840) set cachedPrisma
+
+## [15:16](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=914) push migrations
+```bash
+❯ npx prisma db push
+```
+
 ## Acknowledgements
 
 This project was inspired by Elliot-Chong's fantastic YouTube tutorial titled "Build & Deploy: Full Stack AI Quiz Platform with NextJS 13, 
