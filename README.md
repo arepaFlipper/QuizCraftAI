@@ -123,6 +123,33 @@ The prisma client is used to interact with the database:
 
 ## [19:43](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=1183) Use schemas defined in pastebin
 
+## [23:00](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=1380) Solve 'session.user' is possibly 'undefined'. [18048]
+The following code is causing an error:
+```bash
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+```
+
+To solve it we extend the session types with the following:
+```ts
+declare module 'next-auth' {
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
+    } & DefaultSession["user"]
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+  }
+}
+
+```
+
 ## Acknowledgements
 
 This project was inspired by Elliot-Chong's fantastic YouTube tutorial titled "Build & Deploy: Full Stack AI Quiz Platform with NextJS 13, 
