@@ -1,6 +1,7 @@
 import NextAuth, { type NextAuthOptions, DefaultSession } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/db";
+import GoogleProvider from "next-auth/providers/google";
 
 declare module 'next-auth' {
   interface Session extends DefaultSession {
@@ -17,6 +18,13 @@ declare module "next-auth/jwt" {
 }
 
 export const authOptions: NextAuthOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    })
+
+  ],
   session: {
     strategy: "jwt",
   },
