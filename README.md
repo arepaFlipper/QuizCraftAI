@@ -149,6 +149,8 @@ declare module "next-auth/jwt" {
 }
 
 ```
+## [45:30](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=2730) Import the User type
+Due to we are fetching the user's data from `getAuthSession`, its proper type in `import { type User } from "next-auth";` itself.
 
 ## Acknowledgements
 
