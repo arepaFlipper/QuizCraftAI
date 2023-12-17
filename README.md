@@ -152,6 +152,18 @@ declare module "next-auth/jwt" {
 ## [45:30](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=2730) Import the User type
 Due to we are fetching the user's data from `getAuthSession`, its proper type in `import { type User } from "next-auth";` itself.
 
+## [55:30](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=3330) Handle error `next/image` Un-configured Host
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    domains: ["lh3.googleusercontent.com"],
+  }
+}
+
+module.exports = nextConfig
+```
+
 ## Acknowledgements
 
 This project was inspired by Elliot-Chong's fantastic YouTube tutorial titled "Build & Deploy: Full Stack AI Quiz Platform with NextJS 13, 
