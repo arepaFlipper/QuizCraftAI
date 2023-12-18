@@ -1,5 +1,6 @@
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
+import QuizMeCard from "@/components/dashboard/QuizMeCard";
 
 type Props = {}
 
@@ -19,7 +20,7 @@ const Dashboard = async ({ }: Props) => {
       </div>
 
       <div className="grid gap-4 mt-4 md:grid-cols-2">
-        {/* <QuizMeCard /> */}
+        <QuizMeCard />
         {/* <HistoryCard /> */}
       </div>
       <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-7"> </div>
