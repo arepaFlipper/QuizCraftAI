@@ -11,9 +11,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-// NOTE: This app shares the same DATABASE_URL, due to I can't afford to have
-// another planetScale free tier.
-
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -41,6 +38,7 @@ model User {
   CommentVote  CommentVote[]
   Vote         Vote[]
   Subscription Subscription[]
+  Game         Game[]
 }
 
 model Account {
@@ -62,6 +60,43 @@ model Account {
   @@unique([provider, providerAccountId])
   @@index([userId], name: "userId")
 }
+
+enum GameType {
+  mcq
+  open_ended
+}
+
+model Game {
+  id          String     @id @default(cuid())
+  userId      String
+  timeStarted DateTime
+  topic       String
+  timeEnded   DateTime?
+  gameType    GameType
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions   Question[]
+
+  @@index([userId], name: "userId")
+}
+
+model Question {
+  id                String   @id @default(cuid())
+  question          String
+  answer            String
+  gameId            String
+  options           Json?
+  percentageCorrect Float?
+  isCorrect         Boolean?
+  questionType      GameType
+  userAnswer        String?
+
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([gameId], name: "gameId")
+}
+
+// NOTE: This app shares the same DATABASE_URL, due to I can't afford to have
+// another planetScale free tier.
 
 model Subreddit {
   id        String   @id @default(cuid())
