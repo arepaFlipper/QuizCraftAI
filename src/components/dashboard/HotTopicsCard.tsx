@@ -1,4 +1,5 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import CustomWorldCloud from "@/components/CustomWorldCloud";
 
 type Props = {}
 
@@ -13,7 +14,9 @@ const HotTopicsCard = (props: Props) => {
       </CardHeader>
 
       <CardContent className="pl-2">
-        Word cloud
+
+        <CustomWorldCloud />
+
       </CardContent>
     </Card>
   )
