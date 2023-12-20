@@ -13,7 +13,7 @@ export const GET = async (req: Request, res: Response) => {
 export const POST = async (req: Request, res: Response) => {
   try {
     const session = await getAuthSession();;
-    if (!session?.user) {
+    if (!session?.user && process.env.production) {
       return NextResponse.json({ error: "🖕🤬🖕 Do not spam this endpoint 🖕🤬🖕" }, { status: 401 });
     }
     const body = await req.json();
