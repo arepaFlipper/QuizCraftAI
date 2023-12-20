@@ -102,7 +102,7 @@ Any output key containing < and > indicates you must generate the key name to re
           }
         }
       }
-      return (list_output) ? output : output[0];
+      return (list_input) ? output : output[0];
 
     } catch (error: any) {
       error_message = `\n\nResult: ${res}\n\nError message: ${error.message}`;
