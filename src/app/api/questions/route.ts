@@ -14,17 +14,18 @@ export const POST = async (req: Request, res: Response) => {
     const body = await req.json();
     const { amount, topic, type } = quizCreationSchema.parse(body);
     let questions: any;
-    let message1 = "Your are a helpful AI that is able to generato a pair of questions and answers. "
-    message1 += "The length of the answer should not exceed 15 words."
-    message1 += "Store all the pairs of answers and questions in a JSON array."
+    let message1 = "Your are a helpful AI that is able to generate pairs of questions and answers. "
+    message1 += "The length of each answer should not exceed 15 words."
+    message1 += "Please, return all the pairs of answers and questions in a JSON array. Something like this: \n"
+    message1 += "[{\"question\": \"question 1\", \"answer\": \"answer 1\"}, {\"question\": \"question 2\", \"answer\": \"answer 2\"}]"
     if (type === "open_ended") {
-      let message2 = `Please generate a random hard open-ended questions about ${topic}`
+      const message2 = new Array(amount).fill(`Please generate a random hard open-ended questions about ${topic}`);
 
       const output_format = { question: "question", answer: "answer with max length of 15 words" };
 
       questions = await strict_output(message1, message2, output_format);
     } else if (type === "mcq") {
-      let message2 = `Please generate a random hard multiple choice questions about ${topic}`
+      const message2 = `Please generate a random hard multiple choice questions about ${topic}`
 
       const output_format = { question: "question", answer: "answer with max length of 15 words" };
       questions = await strict_output(message1, message2, output_format);

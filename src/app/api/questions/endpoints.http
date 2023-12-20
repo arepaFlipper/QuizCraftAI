@@ -2,3 +2,9 @@ GET http://localhost:3000/api/questions
 
 
 POST http://localhost:3000/api/questions
+
+{
+    "amount": 3,
+    "topic": "neovim",
+    "type": "open_ended"
+}
