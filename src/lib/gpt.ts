@@ -34,9 +34,9 @@ export const strict_output = async (
 
     if (dynamic_elements) {
       output_format_prompt += `\nAny text enclosed by < and > indicates you must generate content to replace it. 
-Example input: Got to <location>, Example output: Got to the garden¸\n
-Any output key containing < and > indicates you must generate the key name to replace it. Example input: {'<location>':'description of location'}, Example output: { 'school': 'a place for education'}
-`
+      Example input: Got to <location>, Example output: Got to the garden¸\n
+      Any output key containing < and > indicates you must generate the key name to replace it. Example input: {'<location>':'description of location'}, Example output: { 'school': 'a place for education'}
+      `
     }
 
     if (list_input) {
