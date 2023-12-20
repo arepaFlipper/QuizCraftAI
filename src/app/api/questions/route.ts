@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { quizCreationSchema } from "@/schemas/form/quiz"
 import { ZodError } from "zod";
 import { strict_output } from "@/lib/gpt";
+import { getAuthSession } from "@/lib/nextauth";
 
 // NOTE: GET http://localhost:3000/api/questions
 export const GET = async (req: Request, res: Response) => {
@@ -11,6 +12,10 @@ export const GET = async (req: Request, res: Response) => {
 // NOTE: POST http://localhost:3000/api/questions
 export const POST = async (req: Request, res: Response) => {
   try {
+    const session = await getAuthSession();;
+    if (!session?.user) {
+      return NextResponse.json({ error: "🖕🤬🖕 Do not spam this endpoint 🖕🤬🖕" }, { status: 401 });
+    }
     const body = await req.json();
     const { amount, topic, type } = quizCreationSchema.parse(body);
     let questions: any;
