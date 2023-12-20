@@ -16,18 +16,14 @@ export const POST = async (req: Request, res: Response) => {
     let questions: any;
     let message1 = "Your are a helpful AI that is able to generate pairs of questions and answers. "
     message1 += "The length of each answer should not exceed 15 words."
-    message1 += "Please, return all the pairs of answers and questions in a JSON array. Something like this: \n"
-    message1 += "[{\"question\": \"question 1\", \"answer\": \"answer 1\"}, {\"question\": \"question 2\", \"answer\": \"answer 2\"}]"
+    message1 += "Please, return all the pairs of answers and questions in a JSON array."
+    const message2 = new Array(amount).fill(`Please generate a random hard open-ended questions about ${topic}`);
+    let output_format: any = { question: "question", answer: "answer with max length of 15 words" };
     if (type === "open_ended") {
-      const message2 = new Array(amount).fill(`Please generate a random hard open-ended questions about ${topic}`);
-
-      const output_format = { question: "question", answer: "answer with max length of 15 words" };
-
       questions = await strict_output(message1, message2, output_format);
     } else if (type === "mcq") {
-      const message2 = `Please generate a random hard multiple choice questions about ${topic}`
 
-      const output_format = { question: "question", answer: "answer with max length of 15 words" };
+      output_format = { ...output_format, option1: "1st option with max length of 15 words", option2: "2nd option with max length of 15 words", option3: "3rd option with max length of 15 words" };
       questions = await strict_output(message1, message2, output_format);
     }
     return NextResponse.json({ questions, status: 200 });
