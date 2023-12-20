@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 
 
-const open_ai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, });
+const open_ai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || "", });
 
 interface OutputFormat {
   [key: string]: string | string[] | OutputFormat;
