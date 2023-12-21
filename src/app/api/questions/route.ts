@@ -12,7 +12,7 @@ export const GET = async (req: Request, res: Response) => {
 // NOTE: POST http://localhost:3000/api/questions
 export const POST = async (req: Request, res: Response) => {
   try {
-    const session = await getAuthSession();;
+    const session = await getAuthSession();
     if (!session?.user && process.env.production) {
       return NextResponse.json({ error: "🖕🤬🖕 Do not spam this endpoint 🖕🤬🖕" }, { status: 401 });
     }
