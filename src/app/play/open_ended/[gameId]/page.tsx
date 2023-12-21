@@ -1,7 +1,6 @@
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import MCQ from "@/components/MCQ";
 
 type TGame = {
   params: {
@@ -9,7 +8,7 @@ type TGame = {
   }
 }
 
-const OpenEndedMCQPage = async ({ params }: TGame) => {
+const OpenEndedPage = async ({ params }: TGame) => {
   const { gameId } = params;
   const session = await getAuthSession();
   if (!session?.user) {
@@ -20,22 +19,10 @@ const OpenEndedMCQPage = async ({ params }: TGame) => {
     where: {
       id: gameId,
     },
-    include: {
-      questions: {
-        select: {
-          id: true,
-          question: true,
-          options: true,
-        }
-      },
-    }
   });
-  if (!game || game.gameType !== "mcq") {
-    return redirect("/quiz");
-  }
   return (
-    <MCQ game={game} />
+    <div>{JSON.stringify(game, null, 2)}</div>
   )
 }
 
-export default OpenEndedMCQPage
+export default OpenEndedPage
