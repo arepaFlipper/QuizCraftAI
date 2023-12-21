@@ -1,7 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import SignInButton from "@/components/SignInButton";
-import { prisma } from "@/lib/db"
-import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/nextauth";
 
