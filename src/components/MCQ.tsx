@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
+import MCQCounter from "@/components/MCQCounter";
 
 type TMCQ = {
   game: Game & { questions: Pick<Question, "id" | "options" | "question">[] };
@@ -34,6 +35,7 @@ const MCQ = ({ game }: TMCQ) => {
 
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw]">
+
       <div className="flex flex-row justify-between">
         <p>
           <span className="mr-2 text-slate-400">Topic</span>
@@ -44,7 +46,7 @@ const MCQ = ({ game }: TMCQ) => {
           <span>00:00</span>
         </div>
 
-        {/* <MCQCounter /> */}
+        <MCQCounter correct_answers={3} wrong_answers={4} />
       </div>
 
       <Card className="w-full mt-4">
