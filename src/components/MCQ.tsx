@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { z } from "zod";
 import { checkAnswerSchema } from "@/schemas/form/quiz";
+import { useToast } from "@/components/ui/use-toast";
 
 type TMCQ = {
   game: Game & { questions: Pick<Question, "id" | "options" | "question">[] };
@@ -18,6 +19,7 @@ type TMCQ = {
 
 const MCQ = ({ game }: TMCQ) => {
 
+  const { toast } = useToast();
   const [question_idx, setQuestion_idx] = useState(0);
   const [selected_choice, setSelected_choice] = useState<number>(0);
 
@@ -40,6 +42,7 @@ const MCQ = ({ game }: TMCQ) => {
 
   const onSuccess = ({ is_correct }: { is_correct: boolean }) => {
     if (is_correct) {
+      toast({ title: "Correct! ✅", variant: "success" });
       setCorrect_answers((previous: number) => previous + 1);
     } else {
       setWrong_answers((prev: number) => prev + 1);
