@@ -3,10 +3,14 @@
 import { Game, Question } from "@prisma/client";
 import { Timer } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import MCQCounter from "@/components/MCQCounter";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { z } from "zod";
+import { checkAnswerSchema } from "@/schemas/form/quiz";
 
 type TMCQ = {
   game: Game & { questions: Pick<Question, "id" | "options" | "question">[] };
@@ -15,12 +19,36 @@ type TMCQ = {
 const MCQ = ({ game }: TMCQ) => {
 
   const [question_idx, setQuestion_idx] = useState(0);
-
   const [selected_choice, setSelected_choice] = useState<number>(0);
 
-  const current_question = useMemo(() => {
-    return game.questions[question_idx];
-  }, [question_idx, game.questions]);
+  const current_question = useMemo(() => game.questions[question_idx], [question_idx, game.questions]);
+
+  const [correct_answers, setCorrect_answers] = useState(0);
+  const [wrong_answers, setWrong_answers] = useState(0);
+
+  const button_variant = (idx: number) => {
+    return (selected_choice === idx) ? "default" : "outline";
+  }
+
+  const mutationFn = async () => {
+    const payload: z.infer<typeof checkAnswerSchema> = { question_id: current_question.id, user_answer: options[selected_choice] };
+    const response = await axios.post("/api/check_answer", payload)
+    return response.data;
+  };
+
+  const { mutate: checkAnswer, isPending: is_checking } = useMutation({ mutationFn });
+
+  const onSuccess = ({ is_correct }: { is_correct: boolean }) => {
+    if (is_correct) {
+      setCorrect_answers((previous: number) => previous + 1);
+    } else {
+      setWrong_answers((prev: number) => prev + 1);
+    };
+
+  }
+  const handlerNext = useCallback(() => {
+    checkAnswer(undefined, { onSuccess });
+  }, []);
 
   const options = useMemo(() => {
     if (!current_question || !current_question.options) return [];
@@ -28,11 +56,6 @@ const MCQ = ({ game }: TMCQ) => {
     return JSON.parse(current_question.options as string) as string[];
 
   }, [current_question]);
-
-  const button_variant = (idx: number) => {
-    return (selected_choice === idx) ? "default" : "outline";
-  }
-
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw]">
 
