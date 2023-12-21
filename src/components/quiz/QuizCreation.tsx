@@ -74,15 +74,12 @@ const QuizCreation = ({ }: Props) => {
     if (name) {
       capitalize_name = name?.charAt(0)?.toUpperCase() + name?.slice(1);
     }
-    const on_change = (event: React.ChangeEvent<HTMLInputElement>) => {
-      form.setValue("amount", parseInt(event.target.value));
-    }
 
     return (
       <FormItem>
-        <FormLabel>{capitalize_name} of Questions</FormLabel>
+        <FormLabel>{capitalize_name} Of Questions</FormLabel>
         <FormControl>
-          <Input placeholder={`Enter the ${capitalize_name}`} type="number" min={1} max={10} onChange={on_change} {...field} />
+          <Input placeholder="How many questions?" type="number" {...field} onChange={(e) => { form.setValue("amount", parseInt(e.target.value)); }} min={1} max={10} />
         </FormControl>
         <FormDescription>Please provide a topic </FormDescription>
         <FormMessage />

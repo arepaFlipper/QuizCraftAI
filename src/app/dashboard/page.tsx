@@ -31,6 +31,7 @@ const Dashboard = async ({ }: Props) => {
         <HotTopicsCard />
         <RecentActivities />
         <HistoryCard />
+        <Histories />
       </div>
     </main>
   )

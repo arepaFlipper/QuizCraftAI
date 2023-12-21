@@ -11,7 +11,7 @@ const QuizMeCard = ({ }: Props) => {
 
   const handle_onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    router.push("/dashboard/quizme");
+    router.push("/quizme");
   }
 
   return (
