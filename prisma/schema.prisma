@@ -73,7 +73,7 @@ model Game {
   topic       String
   timeEnded   DateTime?
   gameType    GameType
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
   questions   Question[]
 
   @@index([userId], name: "userId")
@@ -90,7 +90,7 @@ model Question {
   questionType      GameType
   userAnswer        String?
 
-  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  game Game? @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
   @@index([gameId], name: "gameId")
 }
