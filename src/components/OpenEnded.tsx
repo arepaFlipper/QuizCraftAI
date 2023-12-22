@@ -23,6 +23,8 @@ const OpenEnded = ({ game }: TOpenEnded) => {
   const [question_idx, setQuestion_idx] = useState<number>(0);
   const [has_ended, setHas_ended] = useState<boolean>(false);
 
+  const [blank_answer, setBlank_answer] = useState<string>("");
+
   const current_question = useMemo(() => (game.questions[question_idx]), [question_idx, game.questions]);
 
   useEffect(() => {
@@ -53,9 +55,10 @@ const OpenEnded = ({ game }: TOpenEnded) => {
 
   const handle_next = useCallback(() => {
     if (isPending) return;
-    checkAnswer(question_idx, { onSuccess });
+    return;
 
-  }, [checkAnswer, toast, isPending, question_idx, game.questions.length]);
+    checkAnswer(question_idx, { onSuccess });
+  }, [checkAnswer, toast, isPending, question_idx, game.questions.length, blank_answer]);
 
   useEffect(() => {
     const handle_keydown = ({ key }: KeyboardEvent) => {
@@ -94,7 +97,7 @@ const OpenEnded = ({ game }: TOpenEnded) => {
         </CardHeader>
       </Card>
       <div className="flex flex-col items-center justify-center w-full mt-4">
-        <BlankAnswerInput answer={current_question.answer} />
+        <BlankAnswerInput answer={current_question.answer} setBlank_answer={setBlank_answer} />
         <Button variant="default" className="mt-2" size="lg" disabled={isPending} onClick={() => handle_next()} >
           {isPending && <Loader2 className="w-4 h-4 mr-2 animated-spin" />}
           Next <ChevronRight className="w-4 h-4 ml-2" />
