@@ -2,17 +2,18 @@
 
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { Game, Question } from "@prisma/client";
-import { ChevronRight, Timer, Loader2 } from "lucide-react";
+import { ChevronRight, Timer, Loader2, BarChart } from "lucide-react";
 import { differenceInSeconds } from "date-fns";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatTimeDelta } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { formatTimeDelta, cn } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import { checkAnswerSchema } from "@/schemas/form/quiz";
 import axios from "axios";
 import BlankAnswerInput from "@/components/BlankAnswerInput";
+import Link from "next/link";
 
 type TOpenEnded = {
   game: Game & { questions: Pick<Question, "id" | "question" | "answer">[] }
@@ -37,8 +38,12 @@ const OpenEnded = ({ game }: TOpenEnded) => {
   }, [has_ended])
 
   const mutationFn = async (question_index: number) => {
-    const payload: z.infer<typeof checkAnswerSchema> = { question_id: current_question.id, user_answer: "" };
-
+    let filled_answer = blank_answer
+    const payload: z.infer<typeof checkAnswerSchema> = { question_id: current_question.id, user_answer: filled_answer };
+    document.querySelectorAll<HTMLInputElement>("#user-blank-input").forEach((input_el) => {
+      filled_answer = filled_answer.replace("_____", input_el.value);
+      input_el.value = "";
+    });
     const response = await axios.post(`/api/check_answer`, payload);
     return response.data;
   }
@@ -55,7 +60,6 @@ const OpenEnded = ({ game }: TOpenEnded) => {
 
   const handle_next = useCallback(() => {
     if (isPending) return;
-    return;
 
     checkAnswer(question_idx, { onSuccess });
   }, [checkAnswer, toast, isPending, question_idx, game.questions.length, blank_answer]);
@@ -70,7 +74,22 @@ const OpenEnded = ({ game }: TOpenEnded) => {
     return () => {
       document.removeEventListener("keydown", handle_keydown);
     }
-  }, [])
+  }, [handle_next]);
+
+  if (has_ended) {
+    return (
+      <div className="absolute flex flex-col justify-center -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+        <div className="px-4 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
+          Yout completed in{" "}
+          {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
+        </div>
+        <Link href={`/statistics/${game.id}`} className={cn(buttonVariants(), "mt-2")}>
+          View Statistics
+          <BarChart className="w-4 h-4 ml-2" />
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
