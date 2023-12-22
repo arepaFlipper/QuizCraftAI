@@ -4,7 +4,7 @@ import { Game, Question } from "@prisma/client";
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Timer } from "lucide-react";
+import { ChevronRight, Timer, Loader2 } from "lucide-react";
 import { checkAnswerSchema } from "@/schemas/form/quiz";
 import MCQCounter from "@/components/MCQCounter";
 import { useMutation } from "@tanstack/react-query";
@@ -21,6 +21,8 @@ const MCQ = ({ game }: TMCQ) => {
   const [selected_choice, setSelected_choice] = useState<number>(0);
   const [correct_answers, setCorrect_answers] = useState<number>(0);
   const [wrong_answers, setWrong_answers] = useState<number>(0);
+
+  const [has_ended, setHas_ended] = useState(false);
 
   const current_question = useMemo(() => (game.questions[question_idx]), [question_idx, game.questions]);
 
@@ -49,13 +51,18 @@ const MCQ = ({ game }: TMCQ) => {
       toast({ title: "Incorrect 🙅", description: "You got it wrong! 😔", variant: "wrong" });
       setWrong_answers((previous) => previous + 1);
     };
+
+    if (question_idx === game.questions.length - 1) {
+      setHas_ended(true);
+      return;
+    }
     setQuestion_idx((ques_idx) => ques_idx + 1);
   }
 
   const handle_next = useCallback(() => {
     if (isPending) return;
     checkAnswer(question_idx, { onSuccess });
-  }, [checkAnswer, toast, question_idx, game.questions.length]);
+  }, [checkAnswer, toast, question_idx, game.questions.length, isPending]);
 
   useEffect(() => {
     const handle_keydown = ({ key }: KeyboardEvent) => {
@@ -67,18 +74,20 @@ const MCQ = ({ game }: TMCQ) => {
         setSelected_choice(2);
       } else if (key === "4") {
         setSelected_choice(3);
+      } else if (key === "ArrowUp") {
+        const choice_to_select = (selected_choice === 0) ? 3 : selected_choice - 1;
+        setSelected_choice(choice_to_select);
+      } else if (key === "ArrowDown") {
+        const choice_to_select = (selected_choice >= 3) ? 0 : selected_choice + 1;
+        setSelected_choice(choice_to_select);
       } else if (key === "Enter") {
         handle_next();
       }
     }
 
-    const handle_arrows = ({ key }: KeyboardEvent) => {
-
-    }
-
     document.addEventListener("keydown", handle_keydown);
     return () => document.removeEventListener("keydown", handle_keydown);
-  }, [handle_next]);
+  }, [handle_next, selected_choice]);
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
@@ -92,7 +101,7 @@ const MCQ = ({ game }: TMCQ) => {
             <Timer className="mr-2" />
           </div>
         </div>
-        <MCQCounter correct_answers={3} wrong_answers={4} />
+        <MCQCounter correct_answers={correct_answers} wrong_answers={wrong_answers} />
       </div>
       <Card className="w-full mt-4">
         <CardHeader className="flex flex-row items-center">
@@ -116,6 +125,7 @@ const MCQ = ({ game }: TMCQ) => {
           );
         })}
         <Button variant="default" className="mt-2" size="lg" disabled={isPending} onClick={() => handle_next()} >
+          {isPending && <Loader2 className="w-4 h-4 mr-2 animated-spin" />}
           Next <ChevronRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
