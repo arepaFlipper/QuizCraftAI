@@ -3,14 +3,16 @@
 import { Game, Question } from "@prisma/client";
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ChevronRight, Timer, Loader2 } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { ChevronRight, Timer, Loader2, BarChart } from "lucide-react";
 import { checkAnswerSchema } from "@/schemas/form/quiz";
 import MCQCounter from "@/components/MCQCounter";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { z } from "zod";
 import { useToast } from "@/components/ui/use-toast";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type TMCQ = {
   game: Game & { questions: Pick<Question, "id" | "options" | "question">[] };
@@ -88,6 +90,20 @@ const MCQ = ({ game }: TMCQ) => {
     document.addEventListener("keydown", handle_keydown);
     return () => document.removeEventListener("keydown", handle_keydown);
   }, [handle_next, selected_choice]);
+
+  if (has_ended) {
+    return (
+      <div className="absolute flex flex-col justify-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="px-4 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
+          You have completed this quiz!🎊
+        </div>
+        <Link href={`/statistics/${game.id}`} className={cn(buttonVariants(), "mt-2")}>
+          View Statistics
+          <BarChart className="w-4 h-4 ml-2" />
+        </Link>
+      </div>
+    );
+  };
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
