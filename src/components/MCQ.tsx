@@ -12,7 +12,8 @@ import axios from "axios";
 import { z } from "zod";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, formatTimeDelta } from "@/lib/utils";
+import { differenceInSeconds } from "date-fns";
 
 type TMCQ = {
   game: Game & { questions: Pick<Question, "id" | "options" | "question">[] };
@@ -26,6 +27,10 @@ const MCQ = ({ game }: TMCQ) => {
 
   const [has_ended, setHas_ended] = useState(false);
 
+  const [now, setNow] = useState<Date>(new Date());
+
+  const { toast } = useToast();
+
   const current_question = useMemo(() => (game.questions[question_idx]), [question_idx, game.questions]);
 
   const options = useMemo(() => {
@@ -33,7 +38,6 @@ const MCQ = ({ game }: TMCQ) => {
     return JSON.parse(current_question.options as string) as string[];
   }, [current_question]);
 
-  const { toast } = useToast();
 
   const mutationFn = async (question_index: number) => {
     const payload: z.infer<typeof checkAnswerSchema> = { question_id: current_question.id, user_answer: options[selected_choice], };
@@ -41,9 +45,17 @@ const MCQ = ({ game }: TMCQ) => {
     return response.data; // NOTE: This goes to onSuccess function w/ is_correct var
 
   }
+
   const { mutate: checkAnswer, isPending } = useMutation({ mutationFn });
 
-
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!has_ended) {
+        setNow(new Date());
+      }
+    }, 1000);
+    return () => clearInterval(interval)
+  }, [has_ended]);
 
   const onSuccess = ({ is_correct }: { is_correct: boolean }) => {
     if (is_correct) {
@@ -115,6 +127,7 @@ const MCQ = ({ game }: TMCQ) => {
           </p>
           <div className="flex self-start mt-3 text-slate-400">
             <Timer className="mr-2" />
+            {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
           </div>
         </div>
         <MCQCounter correct_answers={correct_answers} wrong_answers={wrong_answers} />
