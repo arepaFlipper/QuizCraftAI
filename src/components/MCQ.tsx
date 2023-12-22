@@ -1,7 +1,7 @@
 "use client"
 
 import { Game, Question } from "@prisma/client";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Timer } from "lucide-react";
@@ -56,6 +56,29 @@ const MCQ = ({ game }: TMCQ) => {
     if (isPending) return;
     checkAnswer(question_idx, { onSuccess });
   }, [checkAnswer, toast, question_idx, game.questions.length]);
+
+  useEffect(() => {
+    const handle_keydown = ({ key }: KeyboardEvent) => {
+      if (key === "1") {
+        setSelected_choice(0);
+      } else if (key === "2") {
+        setSelected_choice(1);
+      } else if (key === "3") {
+        setSelected_choice(2);
+      } else if (key === "4") {
+        setSelected_choice(3);
+      } else if (key === "Enter") {
+        handle_next();
+      }
+    }
+
+    const handle_arrows = ({ key }: KeyboardEvent) => {
+
+    }
+
+    document.addEventListener("keydown", handle_keydown);
+    return () => document.removeEventListener("keydown", handle_keydown);
+  }, [handle_next]);
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
