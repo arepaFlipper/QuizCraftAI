@@ -12,6 +12,7 @@ import { toast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import { checkAnswerSchema } from "@/schemas/form/quiz";
 import axios from "axios";
+import BlankAnswerInput from "@/components/BlankAnswerInput";
 
 type TOpenEnded = {
   game: Game & { questions: Pick<Question, "id" | "question" | "answer">[] }
@@ -93,6 +94,7 @@ const OpenEnded = ({ game }: TOpenEnded) => {
         </CardHeader>
       </Card>
       <div className="flex flex-col items-center justify-center w-full mt-4">
+        <BlankAnswerInput answer={current_question.answer} />
         <Button variant="default" className="mt-2" size="lg" disabled={isPending} onClick={() => handle_next()} >
           {isPending && <Loader2 className="w-4 h-4 mr-2 animated-spin" />}
           Next <ChevronRight className="w-4 h-4 ml-2" />
