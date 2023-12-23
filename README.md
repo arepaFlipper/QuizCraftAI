@@ -194,6 +194,27 @@ In this code:
 ## [4:13:00](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=15180) Use [storyset.com](https://storyset.com/)
 This website provides useful images and gifs for projects.
 
+## [4:51:00](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=17460) Fix Vercel build error due to prisma
+This is an issue related to `Prisma` Client initialization and generation during the build process, especially when deploying on `Vercel`. The error message suggests that the `Prisma` Client is outdated due to caching of dependencies on `Vercel`, and the auto-generation process is not triggered.
+
+To resolve this issue, follow the steps below:
+
+Run prisma generate during the build process:
+    Ensure that you run the `prisma` generate command during the build process. This command generates the `Prisma` Client, and it needs to be executed whenever 
+    there are changes to your `Prisma` schema or when deploying to a new environment.
+
+    You can add this command to your build script in your `package.json` file. For example:
+
+```json 
+"scripts": {
+  "build": "prisma generate && next build",
+  "start": "next start"
+}
+```
+
+
+By addressing these points, you should be able to resolve the PrismaClientInitializationError and successfully deploy your Next.js application with Prisma on Vercel.
+
 ## Acknowledgements
 
 This project was inspired by Elliot-Chong's fantastic YouTube tutorial titled "Build & Deploy: Full Stack AI Quiz Platform with NextJS 13, 
