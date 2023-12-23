@@ -35,7 +35,7 @@ const ResultsCard = ({ accuracy }: Props) => {
               <Trophy className="mr-4" stroke="bronze" size={50} />
               <div className="flex flex-col text-2xl font-semibold text-yellow-400">
                 <span>Nice try!</span>
-                <span className="text-sm text-center text-black dark:text-white opacity-50">"keep trying"</span>
+                <span className="text-sm text-center text-black dark:text-white opacity-50">keep trying</span>
               </div>
             </>
           )
