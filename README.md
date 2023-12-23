@@ -191,13 +191,19 @@ In this code:
     This allows `TypeScript` to recognize the value property on each element in the `forEach` loop without any errors.
 
 
+## [4:13:00](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=15180) Use [storyset.com](https://storyset.com/)
+This website provides useful images and gifs for projects.
+
 ## Acknowledgements
 
 This project was inspired by Elliot-Chong's fantastic YouTube tutorial titled "Build & Deploy: Full Stack AI Quiz Platform with NextJS 13, 
 TailwindCSS, OpenAI, Next Auth." I express my gratitude to Elliot-Chong for providing valuable insights and guidance.
 
+Thanks to `Storyset.com` for providing the image to use it in loader page.
+
 ### Elliot-Chong's Tutorial:
 Build & Deploy: Full Stack AI Quiz Platform with NextJS 13, TailwindCSS, OpenAI, Next Auth
+
 
 ## Contributing
 
