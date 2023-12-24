@@ -46,7 +46,7 @@ const CustomWorldCloud = ({ formatted_topics }: WordCloud) => {
   const router = useRouter();
 
   const on_word_click = (_: any, { text }: { text: string }) => {
-    router.push(`/quiz?topic=${text}`);
+    router.push(`/quizme?topic=${text}`);
   }
   return (
     <>
