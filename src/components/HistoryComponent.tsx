@@ -6,15 +6,20 @@ import MCQCounter from "./MCQCounter";
 
 type Props = {
   limit: number;
-  userId: string;
+  user_email: string;
 };
 
-const HistoryComponent = async ({ limit, userId }: Props) => {
+const HistoryComponent = async ({ limit, user_email }: Props) => {
   const games = await prisma.game.findMany({
     take: limit,
     orderBy: {
       timeStarted: "desc",
     },
+    where: {
+      user: {
+        email: user_email,
+      }
+    }
   });
   return (
     <div className="space-y-8">
