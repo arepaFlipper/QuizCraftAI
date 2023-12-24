@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-          npm install typescript # Install TypeScript as part of your dependencies
+          npm install typescript@latest # Install TypeScript as part of your dependencies
 
       - name: TypeScript checkers
         run: |

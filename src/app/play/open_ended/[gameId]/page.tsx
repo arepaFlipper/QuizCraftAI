@@ -1,6 +1,7 @@
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
+import OpenEnded from "@/components/OpenEnded";
 
 type TGame = {
   params: {
@@ -19,9 +20,22 @@ const OpenEndedPage = async ({ params }: TGame) => {
     where: {
       id: gameId,
     },
+    include: {
+      questions: {
+        select: {
+          id: true,
+          question: true,
+          answer: true,
+        }
+      }
+    }
   });
+
+  if (!game || game.gameType !== "open_ended") {
+    return redirect("/quiz");
+  }
   return (
-    <div>{JSON.stringify(game, null, 2)}</div>
+    <OpenEnded game={game} />
   )
 }
 

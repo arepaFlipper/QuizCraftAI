@@ -8,19 +8,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { type InputHTMLAttributes } from "react";
+import { type InputHTMLAttributes, useState } from "react";
 import { CopyCheck, BookOpen } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import LoadingQuestions from "@/components/LoadingQuestions";
 
-type Props = {}
+type TQCreation = {
+  topic_param: string;
+}
 
 type TInput = z.infer<typeof quizCreationSchema>;
 
-const QuizCreation = ({ }: Props) => {
+const QuizCreation = ({ topic_param }: TQCreation) => {
   const router = useRouter();
+  const [show_loader, setShow_loader] = useState(false);
+
+  const [finished, setFinished] = useState(false);
 
   const mutationFn = async ({ amount, topic, type }: TInput) => {
     const response = await axios.post(`/api/game`, { amount, topic, type });
@@ -31,22 +37,31 @@ const QuizCreation = ({ }: Props) => {
     resolver: zodResolver(quizCreationSchema),
     defaultValues: {
       amount: 3,
-      topic: "",
+      topic: topic_param,
       type: "open_ended",
     }
   });
 
   const on_submit = ({ amount, topic, type }: TInput) => {
+    setShow_loader(true);
     const onSuccess = ({ gameId }: { gameId: string }) => {
-      if (form.getValues("type") === "open_ended") {
-        router.push(`/play/open_ended/${gameId}`);
-      } else if (form.getValues("type") === "mcq") {
-        router.push(`/play/mcq/${gameId}`);
-      };
+      setFinished(true);
+      setTimeout(() => {
+        if (form.getValues("type") === "open_ended") {
+          router.push(`/play/open_ended/${gameId}`);
+        } else if (form.getValues("type") === "mcq") {
+          router.push(`/play/mcq/${gameId}`);
+        };
+      }, 1000);
     }
+
+    const onError = () => {
+      setShow_loader(false)
+    }
+
     getQuestions(
       { amount, topic, type },
-      { onSuccess }
+      { onSuccess, onError }
     );
   }
 
@@ -89,6 +104,9 @@ const QuizCreation = ({ }: Props) => {
 
   form.watch();
 
+  if (show_loader) {
+    return <LoadingQuestions finished={finished} />
+  }
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <Card>

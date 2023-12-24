@@ -160,17 +160,71 @@ const nextConfig = {
     domains: ["lh3.googleusercontent.com"],
   }
 }
-
 module.exports = nextConfig
 ```
+
+## [3:43:00](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=13380) Handle typing error on querySelectorAll
+The TypeScript error is indicating that the value property does not exist on the Element type. To resolve this issue, you need to let TypeScript know that the elements returned by querySelectorAll("#user-blank-input") are `HTMLInputElement` elements.
+
+You can achieve this by using the `HTMLInputElement` type assertion. Here's an updated version of your code:
+
+```tsx
+
+const mutationFn = async (question_index: number) => {
+  let filled_answer = blank_answer;
+  const payload: z.infer<typeof checkAnswerSchema> = { question_id: current_question.id, user_answer: filled_answer };
+
+  // use HTMLInputElement type assertion here.
+  document.querySelectorAll<HTMLInputElement>("#user-blank-input").forEach((input_el) => {
+    filled_answer = filled_answer.replace("_____", input_el.value);
+    input_el.value = "";
+  });
+
+  const response = await axios.post(`/api/check_answer`, payload);
+  return response.data;
+};
+```
+
+In this code:
+
+    I've used `querySelectorAll<HTMLInputElement>("#user-blank-input")` to explicitly tell `TypeScript` that the returned elements are `HTMLInputElement` elements.
+    This allows `TypeScript` to recognize the value property on each element in the `forEach` loop without any errors.
+
+
+## [4:13:00](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=15180) Use [storyset.com](https://storyset.com/)
+This website provides useful images and gifs for projects.
+
+## [4:51:00](https://youtu.be/vIyU4nInlt0?si=VEnVVGU8J5O7W0h3&t=17460) Fix Vercel build error due to prisma
+This is an issue related to `Prisma` Client initialization and generation during the build process, especially when deploying on `Vercel`. The error message suggests that the `Prisma` Client is outdated due to caching of dependencies on `Vercel`, and the auto-generation process is not triggered.
+
+To resolve this issue, follow the steps below:
+
+Run prisma generate during the build process:
+    Ensure that you run the `prisma` generate command during the build process. This command generates the `Prisma` Client, and it needs to be executed whenever 
+    there are changes to your `Prisma` schema or when deploying to a new environment.
+
+    You can add this command to your build script in your `package.json` file. For example:
+
+```json 
+"scripts": {
+  "build": "prisma generate && next build",
+  "start": "next start"
+}
+```
+
+
+By addressing these points, you should be able to resolve the PrismaClientInitializationError and successfully deploy your Next.js application with Prisma on Vercel.
 
 ## Acknowledgements
 
 This project was inspired by Elliot-Chong's fantastic YouTube tutorial titled "Build & Deploy: Full Stack AI Quiz Platform with NextJS 13, 
 TailwindCSS, OpenAI, Next Auth." I express my gratitude to Elliot-Chong for providing valuable insights and guidance.
 
+Thanks to `Storyset.com` for providing the image to use it in loader page.
+
 ### Elliot-Chong's Tutorial:
 Build & Deploy: Full Stack AI Quiz Platform with NextJS 13, TailwindCSS, OpenAI, Next Auth
+
 
 ## Contributing
 

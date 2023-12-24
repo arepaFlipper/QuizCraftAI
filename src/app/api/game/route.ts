@@ -13,7 +13,8 @@ export const POST = async (request: Request, res: Response) => {
       userId = "🖕🤬🖕 Do not spam this endpoint 🖕🤬🖕";
       return NextResponse.json({ error: userId }, { status: 401 });
     } else if (!session?.user && process.env.MODE === "development") {
-      userId = process.env.USER_ID_TESTER as string;
+      userId = session?.user?.id as string;
+      // userId = process.env.USER_ID_TESTER as string;
     }
 
     const body = await request.json();
@@ -21,6 +22,12 @@ export const POST = async (request: Request, res: Response) => {
     let response;
     const data = { gameType: type, timeStarted: new Date(), userId, topic }
     const game = await prisma.game.create({ data });
+
+    const count_response = await prisma.topicCount.upsert({
+      where: { topic: topic, id: game.id },
+      create: { topic, count: 1, },
+      update: { count: { increment: 1 } },
+    });
     const { data: response_data } = await axios.post(`${process.env.HOST_URL}/api/questions`, { amount, topic, type });
     if (type === "mcq") {
       type Tmcq = {
