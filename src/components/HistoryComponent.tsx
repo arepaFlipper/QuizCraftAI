@@ -12,9 +12,6 @@ type Props = {
 const HistoryComponent = async ({ limit, userId }: Props) => {
   const games = await prisma.game.findMany({
     take: limit,
-    where: {
-      userId,
-    },
     orderBy: {
       timeStarted: "desc",
     },

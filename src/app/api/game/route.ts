@@ -13,7 +13,8 @@ export const POST = async (request: Request, res: Response) => {
       userId = "🖕🤬🖕 Do not spam this endpoint 🖕🤬🖕";
       return NextResponse.json({ error: userId }, { status: 401 });
     } else if (!session?.user && process.env.MODE === "development") {
-      userId = process.env.USER_ID_TESTER as string;
+      userId = session?.user?.id as string;
+      // userId = process.env.USER_ID_TESTER as string;
     }
 
     const body = await request.json();
