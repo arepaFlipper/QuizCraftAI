@@ -4,7 +4,9 @@ import D3WordCloud from 'react-d3-cloud';
 import { useTheme } from "next-themes";
 import { useRouter } from 'next/navigation';
 
-type Props = {}
+type WordCloud = {
+  formatted_topics: { text: string, value: number }[];
+}
 
 const HOT_TOPICS = [
   "Arrays & Hasing",
@@ -39,7 +41,7 @@ const fontSizeMapper = (word: { value: number }) => {
   res = res + 16;
   return res;
 }
-const CustomWorldCloud = ({ }: Props) => {
+const CustomWorldCloud = ({ formatted_topics }: WordCloud) => {
   const { theme } = useTheme();
   const router = useRouter();
 
@@ -48,7 +50,7 @@ const CustomWorldCloud = ({ }: Props) => {
   }
   return (
     <>
-      <D3WordCloud data={HOT_TOPICS} onWordClick={on_word_click} height={550} font="Times" fontSize={fontSizeMapper} rotate={0} padding={10} fill={(theme === "dark") ? "white" : "black"} />
+      <D3WordCloud data={formatted_topics} onWordClick={on_word_click} height={550} font="Times" fontSize={fontSizeMapper} rotate={0} padding={10} fill={(theme === "dark") ? "white" : "black"} />
     </>
   )
 }
