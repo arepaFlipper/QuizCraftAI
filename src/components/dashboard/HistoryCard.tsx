@@ -15,7 +15,7 @@ const HistoryCard = ({ }: Props) => {
 
   return (
     <Card className="homver:cursor-pointer hover:opacity-75" onClick={handle_onClick}>
-      <CardHeader className="flex flex-row items-cnter justify-between pb-2 space-y-0">
+      <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <CardTitle className="text-2xl font-bold">History</CardTitle>
         <History size={28} strokeWidth={2.5} />
       </CardHeader>

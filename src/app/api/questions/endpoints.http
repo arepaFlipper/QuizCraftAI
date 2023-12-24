@@ -5,6 +5,6 @@ POST http://localhost:3000/api/questions
 
 {
     "amount": 3,
-    "topic": "neovim",
+    "topic": "1-D Dynamic Programming",
     "type": "mcq"
 }

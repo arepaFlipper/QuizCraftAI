@@ -2,6 +2,7 @@
 
 import D3WordCloud from 'react-d3-cloud';
 import { useTheme } from "next-themes";
+import { useRouter } from 'next/navigation';
 
 type Props = {}
 
@@ -40,9 +41,14 @@ const fontSizeMapper = (word: { value: number }) => {
 }
 const CustomWorldCloud = ({ }: Props) => {
   const { theme } = useTheme();
+  const router = useRouter();
+
+  const on_word_click = (_: any, { text }: { text: string }) => {
+    router.push(`/quiz?topic=${text}`);
+  }
   return (
     <>
-      <D3WordCloud data={HOT_TOPICS} height={550} font="Times" fontSize={fontSizeMapper} rotate={0} padding={10} fill={(theme === "dark") ? "white" : "black"} />
+      <D3WordCloud data={HOT_TOPICS} onWordClick={on_word_click} height={550} font="Times" fontSize={fontSizeMapper} rotate={0} padding={10} fill={(theme === "dark") ? "white" : "black"} />
     </>
   )
 }

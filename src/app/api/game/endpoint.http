@@ -2,6 +2,6 @@ POST http://localhost:3000/api/game
 
 {
     "amount": 3,
-    "topic": "Rust lang",
-    "type": "mcq"
+    "topic": "1-D Dynamic Programming",
+    "type": "open_ended"
 }
