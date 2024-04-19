@@ -7,6 +7,7 @@ import MCQCounter from "./MCQCounter";
 type Props = {
   limit: number;
   user_email: string;
+  userId: string;
 };
 
 const HistoryComponent = async ({ limit, user_email }: Props) => {
